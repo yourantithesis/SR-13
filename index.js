@@ -1,13 +1,16 @@
 const Discord = require('discord.js-selfbot-v13');
+const request = require("request");
+const config = require("./config.json");
+const STATUS_URL = "https://discordapp.com/api/v8/users/@me/settings";
 require('dotenv').config()
-const client = new Discord.Client({checkUpdate:false, ws: { properties: { $browser: "Discord iOS" }}})
+const client = new Discord.Client({checkUpdate:false})
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   //Client Events
 client.on("ready", async () => {
       console.log(`✅ ${client.user.username} Summoned`);
       client.user.setPresence({status: 'online'});
       const {joinVoiceChannel} = require('@discordjs/voice');
-      const channel = client.channels.cache.get("996323526837542942"); // voice channel's id
+      const channel = client.channels.cache.get("1017252352681574481"); // voice channel's id
       if (!channel) return console.log("The channel does not exist!");
       setInterval(() => {
               const connection = joinVoiceChannel({
@@ -19,5 +22,53 @@ client.on("ready", async () => {
               });
             }, 600)
           });
+async function loop() {
+            for (let anim of config.animation) {
+              await doRequest(anim.text, anim.emojiID, anim.emojiName).catch(console.error);
+              await new Promise(p => setTimeout(p, anim.timeout));
+            }
+          
+            loop();
+          }
+          console.log("Discord Status Changer is Running...");
+          loop();
+          function doRequest(text, emojiID = null, emojiName = null) {
+            return new Promise((resolve, reject) => {
+              request({
+                method: "PATCH",
+                uri: STATUS_URL,
+                headers: {
+                  Authorization: process.env.TOKEN
+                },
+                json: {
+                  custom_status: {
+                    text: text,
+                    emoji_id: emojiID,
+                    emoji_name: emojiName
+                  }
+                }
+              }, (err, res, body) => {
+                if (err) {
+                  reject(err);
+                  return;
+                }
+          
+                if (res.statusCode !== 200) {
+                  reject(new Error("Invalid Status Code: " + res.statusCode));
+                  return;
+                }
+          
+                resolve(true);
+              });
+            });
+          }
+let collect = setInterval(() => {
+  client.channels.cache.get('826145639334281267').send(')collect');
+}, 1200320);
+let depall = setInterval(() => {
+  client.channels.cache.get('826145639334281267').send(')depall');
+}, 1000320);
+let claim = setInterval(() => {
+  client.channels.cache.get('826145639334281267').send(')work');
+}, 1500000);
 client.login(process.env.TOKEN)
-
