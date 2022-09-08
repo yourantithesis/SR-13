@@ -1,0 +1,17 @@
+{
+    "animation": [
+          {
+              "text": "heyhoo",
+              "emoji_name": "parrot",
+              "timeout": 12000
+          },	
+     {
+            "text": "Snapping one, two",
+            "timeout": 12000
+        },			
+      {
+              "text": "Where are you ?",
+              "timeout": 12000
+          }
+      ]
+  }
