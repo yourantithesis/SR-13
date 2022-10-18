@@ -1,16 +1,17 @@
 const Discord = require('discord.js-selfbot-v13');
 const request = require("request");
-const config = require("./config.json");
+const config = require("/config.json);
+const uptime = require("./uptime.js");
 const STATUS_URL = "https://discordapp.com/api/v8/users/@me/settings";
 require('dotenv').config()
 const client = new Discord.Client({checkUpdate:false})
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   //Client Events
 client.on("ready", async () => {
-      console.log(`✅ ${client.user.username} Summoned`);
+      console.log(`✅ ${client.user.username} Started Online`);
       client.user.setPresence({status: 'online'});
       const {joinVoiceChannel} = require('@discordjs/voice');
-      const channel = client.channels.cache.get("1017252352681574481"); // voice channel's id
+      const channel = client.channels.cache.get("1027735118225346630"); // voice channel's id
       if (!channel) return console.log("The channel does not exist!");
       setInterval(() => {
               const connection = joinVoiceChannel({
@@ -62,13 +63,4 @@ async function loop() {
               });
             });
           }
-let collect = setInterval(() => {
-  client.channels.cache.get('826145639334281267').send(')collect');
-}, 1200320);
-let depall = setInterval(() => {
-  client.channels.cache.get('826145639334281267').send(')depall');
-}, 1000320);
-let claim = setInterval(() => {
-  client.channels.cache.get('826145639334281267').send(')work');
-}, 1500000);
 client.login(process.env.TOKEN)
