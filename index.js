@@ -1,7 +1,6 @@
 const Discord = require('discord.js-selfbot-v13');
 const request = require("request");
 const config = require("/config.json);
-const uptime = require("./uptime.js");
 const STATUS_URL = "https://discordapp.com/api/v8/users/@me/settings";
 require('dotenv').config()
 const client = new Discord.Client({checkUpdate:false})
@@ -63,4 +62,5 @@ async function loop() {
               });
             });
           }
+require("./uptime.js")();
 client.login(process.env.TOKEN)
